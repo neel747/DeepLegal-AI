@@ -78,3 +78,16 @@ Each entry follows:
 **Key decisions:** Use OpenAI embeddings to avoid local segmentation faults and benefit from SOTA retrieval performance.
 **Issues encountered:** Local `sentence-transformers` caused segmentation faults on Python 3.13; resolved by moving to API-based embeddings.
 **Next step:** Phase 4 — Sparse Retrieval (BM25) + Hybrid Fusion
+
+---
+
+### 2026-05-14 — Phase 4 — Sparse Retrieval & Hybrid Fusion
+**Status:** Completed
+**What was done:**
+- Integrated `rank_bm25` for keyword-based retrieval.
+- Developed `BM25Store` with `nltk` tokenization and persistence.
+- Implemented `HybridSearcher` using **Reciprocal Rank Fusion (RRF)** to combine Dense and Sparse results.
+- Created a build script for dual indexing (FAISS + BM25).
+**What was learned:** Hybrid search significantly improves precision for legal documents by catching exact terms (like "Section 1") that vector search might miss due to high semantic similarity with other sections.
+**Key decisions:** Use RRF for fusion as it is model-agnostic and robust to different scoring scales between FAISS (L2 distance) and BM25 (relevance score).
+**Next step:** Phase 5 — Graph-Enhanced Retrieval + Cross-Encoder Reranking

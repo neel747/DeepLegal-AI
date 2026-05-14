@@ -114,17 +114,17 @@ DeepLegal-AI/
 **What you learn:** TF-IDF / BM25, why keyword search matters for legal text, Reciprocal Rank Fusion
 
 ### 4A: BM25 Index
-- [ ] Install `rank_bm25`
-- [ ] Build a BM25 index over all chunk texts
-- [ ] Implement `sparse_search(query, top_k)` function
-- [ ] Test same 5 queries from Phase 3 — compare results with dense search
-- [ ] Understand: What does BM25 catch that FAISS misses? (exact terms, IDs, section numbers)
+- [x] Install `rank_bm25`
+- [x] Build a BM25 index over all chunk texts
+- [x] Implement `sparse_search(query, top_k)` function
+- [x] Test same 5 queries from Phase 3 — compare results with dense search
+- [x] Understand: What does BM25 catch that FAISS misses? (exact terms, IDs, section numbers)
 
 ### 4B: Hybrid Fusion (Reciprocal Rank Fusion)
-- [ ] Implement RRF: combine dense + sparse rankings into a single ranked list
-- [ ] Implement `hybrid_search(query, top_k)` function
-- [ ] Test same queries — is hybrid better than either alone?
-- [ ] Add metadata filtering (filter by contract type, date range, party)
+- [x] Implement RRF: combine dense + sparse rankings into a single ranked list
+- [x] Implement `hybrid_search(query, top_k)` function
+- [x] Test same queries — is hybrid better than either alone?
+- [x] Add metadata filtering (filter by contract type, date range, party)
 
 **Deliverable:** A working `hybrid_search()` that combines BM25 + FAISS.
 
