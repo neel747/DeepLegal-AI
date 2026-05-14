@@ -64,10 +64,10 @@ class GraphBuilder:
 
     def create_entity_nodes(self, filename: str, entities: Dict[str, Any]):
         """
-        Creates nodes for Parties, Dates, etc., and links them to the Contract.
+        Creates nodes for Parties, Dates, Obligations, and Amounts.
         """
         with self.driver.session() as session:
-            # 1. Handle Parties
+            # 1. Parties
             parties = entities.get("Parties", {})
             if isinstance(parties, dict):
                 for role, name in parties.items():
@@ -78,10 +78,7 @@ class GraphBuilder:
                         MERGE (c)-[:BETWEEN_PARTIES {role: $role}]->(p)
                         """, filename=filename, name=name, role=role)
             
-            # 2. Handle Contract Type as a label/property or relationship
-            # Already handled in create_contract_node, but could be expanded
-
-            # 3. Handle Dates
+            # 2. Dates
             dates = entities.get("Key Dates", {})
             if isinstance(dates, dict):
                 for date_type, date_val in dates.items():
@@ -91,6 +88,49 @@ class GraphBuilder:
                         MERGE (d:Date {value: $date_val})
                         MERGE (c)-[:HAS_DATE {type: $date_type}]->(d)
                         """, filename=filename, date_val=date_val, date_type=date_type)
+
+            # 3. Monetary Values (Amounts)
+            amounts = entities.get("Monetary Values", {})
+            if isinstance(amounts, dict):
+                for amt_type, amt_val in amounts.items():
+                    if amt_val:
+                        session.run("""
+                        MATCH (c:Contract {filename: $filename})
+                        MERGE (a:Amount {value: $amt_val, type: $amt_type})
+                        MERGE (c)-[:HAS_VALUE]->(a)
+                        """, filename=filename, amt_val=amt_val, amt_type=amt_type)
+
+            # 4. Obligations
+            obligations = entities.get("Key Obligations", [])
+            if isinstance(obligations, list):
+                for obl in obligations:
+                    session.run("""
+                    MATCH (c:Contract {filename: $filename})
+                    CREATE (o:Obligation {description: $obl})
+                    CREATE (c)-[:HAS_OBLIGATION]->(o)
+                    """, filename=filename, obl=obl)
+
+    def link_contracts(self):
+        """
+        Creates relationships between related contracts (e.g., SOW governed by MSA).
+        Simple heuristic: SOWs are governed by the MSA in the same folder.
+        """
+        with self.driver.session() as session:
+            # Link SOW to MSA
+            session.run("""
+            MATCH (msa:Contract), (sow:Contract)
+            WHERE msa.type = 'MSA' AND sow.type = 'SOW'
+            MERGE (sow)-[:GOVERNED_BY]->(msa)
+            """)
+            
+            # Link Amendment to MSA/SOW
+            session.run("""
+            MATCH (amd:Contract), (target:Contract)
+            WHERE amd.type = 'Amendment' AND (target.type = 'MSA' OR target.type = 'SOW')
+            AND amd.filename CONTAINS target.filename
+            MERGE (amd)-[:AMENDS]->(target)
+            """)
+            logger.info("Contract relationships linked.")
 
     def populate_from_directory(self, output_dir: str):
         """
@@ -111,11 +151,12 @@ class GraphBuilder:
                 
                 logger.info(f"Importing {orig_filename}...")
                 
-                # Determine doc type from filename or metadata
+                # Determine doc type
                 doc_type = "Contract"
                 if "msa" in orig_filename.lower(): doc_type = "MSA"
                 elif "sow" in orig_filename.lower(): doc_type = "SOW"
                 elif "nda" in orig_filename.lower(): doc_type = "NDA"
+                elif "amendment" in orig_filename.lower(): doc_type = "Amendment"
                 
                 self.create_contract_node(orig_filename, doc_type)
                 self.create_clause_nodes(orig_filename, chunks)
@@ -125,6 +166,9 @@ class GraphBuilder:
                 
             except Exception as e:
                 logger.error(f"Failed to import {filename}: {str(e)}")
+        
+        # Finally, create links between contracts
+        self.link_contracts()
 
 if __name__ == "__main__":
     builder = GraphBuilder()

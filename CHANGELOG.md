@@ -65,3 +65,16 @@ Each entry follows:
 **Key decisions:** Use `MERGE` in Cypher to ensure idempotency when importing entities like Parties and Dates.
 **Issues encountered:** Requires active Neo4j instance for full verification.
 **Next step:** Phase 3 — Dense Vector Retrieval (FAISS)
+
+---
+
+### 2026-05-14 — Phase 3 — Dense Vector Retrieval (FAISS)
+**Status:** Completed
+**What was done:**
+- Implemented `LegalEmbedder` using OpenAI's `text-embedding-3-small` (switched from local models to ensure compatibility and quality).
+- Developed `VectorStore` using FAISS for indexing and retrieval of semantic embeddings.
+- Created a search testing script to verify retrieval logic.
+**What was learned:** Dense retrieval is powerful for semantic similarity but can be sensitive to specific terminology or IDs (where BM25 will help in Phase 4).
+**Key decisions:** Use OpenAI embeddings to avoid local segmentation faults and benefit from SOTA retrieval performance.
+**Issues encountered:** Local `sentence-transformers` caused segmentation faults on Python 3.13; resolved by moving to API-based embeddings.
+**Next step:** Phase 4 — Sparse Retrieval (BM25) + Hybrid Fusion

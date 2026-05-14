@@ -96,15 +96,15 @@ DeepLegal-AI/
 **What you learn:** Embeddings, vector similarity, FAISS indexing, why dense retrieval alone isn't enough
 
 ### 3A: Embedding Generation
-- [ ] Install `sentence-transformers` (Local) or `google-generativeai`
-- [ ] Generate embeddings for all chunks using a free model (e.g., `all-MiniLM-L6-v2` or Gemini)
-- [ ] Understand: What does an embedding represent? Why cosine similarity works?
+- [x] Install `sentence-transformers` (Local) or `google-generativeai`
+- [x] Generate embeddings for all chunks using a free model (e.g., `all-MiniLM-L6-v2` or Gemini)
+- [x] Understand: What does an embedding represent? Why cosine similarity works?
 
 ### 3B: FAISS Index Construction
-- [ ] Build a FAISS index from chunk embeddings
-- [ ] Implement `dense_search(query, top_k)` function
-- [ ] Test with 5 sample queries — examine retrieved chunks manually
-- [ ] Understand: When does dense retrieval fail? (exact legal terms, section numbers, rare entities)
+- [x] Build a FAISS index from chunk embeddings
+- [x] Implement `dense_search(query, top_k)` function
+- [x] Test with 5 sample queries — examine retrieved chunks manually
+- [x] Understand: When does dense retrieval fail? (exact legal terms, section numbers, rare entities)
 
 **Deliverable:** A working `dense_search()` that returns top-k chunks for any query.
 

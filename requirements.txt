@@ -6,3 +6,6 @@ python-dotenv
 tiktoken
 langchain-text-splitters
 neo4j
+sentence-transformers
+faiss-cpu
+numpy

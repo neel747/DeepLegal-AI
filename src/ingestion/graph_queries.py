@@ -46,18 +46,19 @@ class GraphQueries:
             result = session.run(query, party_name=party_name)
             return [record.data() for record in result]
 
-    def find_linked_contracts(self, filename: str):
+    def get_contract_chain(self):
         """
-        Finds linked contracts (e.g., SOWs linked to an MSA).
-        Note: This assumes relationships like (:Contract)-[:REFERENCES]->(:Contract) 
-        are created, which we can add in the builder logic later.
+        Retrieves the hierarchy: MSA -> SOW -> Amendment
         """
         query = """
-        MATCH (c1:Contract {filename: $filename})-[r:REFERENCES|AMENDS|GOVERNED_BY]-(c2:Contract)
-        RETURN c2.filename AS filename, type(r) AS relationship
+        MATCH (msa:Contract {type: 'MSA'})
+        OPTIONAL MATCH (sow:Contract {type: 'SOW'})-[:GOVERNED_BY]->(msa)
+        OPTIONAL MATCH (amd:Contract {type: 'Amendment'})-[:AMENDS]->(target)
+        WHERE target = msa OR target = sow
+        RETURN msa.filename AS MSA, sow.filename AS SOW, amd.filename AS Amendment
         """
         with self.driver.session() as session:
-            result = session.run(query, filename=filename)
+            result = session.run(query)
             return [record.data() for record in result]
 
 if __name__ == "__main__":
