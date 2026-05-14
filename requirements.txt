@@ -1,0 +1,7 @@
+unstructured[pdf,docx]
+python-docx
+pymupdf
+openai
+python-dotenv
+tiktoken
+langchain-text-splitters

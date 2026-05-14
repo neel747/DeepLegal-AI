@@ -8,11 +8,11 @@
 
 ## Phase 0: Project Setup & Foundation
 **What you learn:** Project structure, virtual env, dependency management
-- [ ] Create project folder structure
-- [ ] Set up Python venv + requirements.txt
-- [ ] Create `.env` for API keys (Google Gemini API - Free Tier, Neo4j)
-- [ ] Create a basic `main.py` that loads env vars and prints "DeepLegal AI ready"
-- [ ] Set up Git repo with `.gitignore`
+- [x] Create project folder structure
+- [x] Set up Python venv + requirements.txt
+- [x] Create `.env` for API keys (Google Gemini API - Free Tier, Neo4j)
+- [x] Create a basic `main.py` that loads env vars and prints "DeepLegal AI ready"
+- [x] Set up Git repo with `.gitignore`
 
 **Key files created:**
 ```
@@ -42,25 +42,25 @@ DeepLegal-AI/
 **What you learn:** How to parse PDFs/DOCX, why naive chunking fails for legal text, legal-aware splitting strategies
 
 ### 1A: Basic PDF/DOCX Parsing
-- [ ] Install `unstructured`, `python-docx`, `pymupdf`
-- [ ] Write a parser that extracts raw text from PDF and DOCX files
-- [ ] Test with 2-3 sample contracts
-- [ ] Understand: What gets lost? (headers, tables, formatting)
+- [x] Install `unstructured`, `python-docx`, `pymupdf`
+- [x] Write a parser that extracts raw text from PDF and DOCX files
+- [x] Test with 2-3 sample contracts
+- [x] Understand: What gets lost? (headers, tables, formatting)
 
 ### 1B: Legal-Aware Chunking
-- [ ] Understand why 500-char naive chunks break legal context
-- [ ] Implement section-aware chunking (split by clause/section headers like "Section 4.2")
-- [ ] Preserve metadata per chunk: source file, section number, page number, doc type
-- [ ] Test: Print chunks and verify they are semantically complete
+- [x] Understand why 500-char naive chunks break legal context
+- [x] Implement section-aware chunking (split by clause/section headers like "Section 4.2")
+- [x] Preserve metadata per chunk: source file, section number, page number, doc type
+- [x] Test: Print chunks and verify they are semantically complete
 
 ### 1C: Structured Entity Extraction
-- [ ] Use GPT-4o-mini to extract key entities from each contract:
+- [x] Use GPT-4o-mini to extract key entities from each contract:
   - Parties (Client, Vendor)
   - Contract type (MSA, SOW, NDA, Amendment)
   - Key dates (effective, expiration, renewal)
   - Monetary values (liability caps, payment terms)
   - Key obligations and termination clauses
-- [ ] Store extracted entities as structured JSON alongside chunks
+- [x] Store extracted entities as structured JSON alongside chunks
 
 **Deliverable:** A pipeline that takes a folder of contracts → outputs clean chunks + extracted entities as JSON files.
 
