@@ -70,27 +70,23 @@ DeepLegal-AI/
 **What you learn:** What a knowledge graph is, why it matters for legal docs, Neo4j basics, entity-relationship modeling
 
 ### 2A: Neo4j Setup & Schema Design
-- [ ] Install Neo4j Desktop (or use Docker `neo4j` image)
-- [ ] Learn Cypher basics (CREATE, MATCH, MERGE, relationships)
-- [ ] Design the graph schema:
+- [x] Install Neo4j Desktop (or use Docker `neo4j` image)
+- [x] Learn Cypher basics (CREATE, MATCH, MERGE, relationships)
+- [x] Design the graph schema:
   - Nodes: `Contract`, `Clause`, `Party`, `Obligation`, `Date`, `Amount`
   - Relationships: `HAS_CLAUSE`, `REFERENCES`, `AMENDS`, `BETWEEN_PARTIES`, `GOVERNED_BY`
 
 ### 2B: Graph Population Pipeline
-- [ ] Write code Python, LangChain, LangGraph, Gemini 1.5 Flash (Free Tier), 
-HuggingFace Embeddings (Local) or Gemini Embeddings, 
-FAISS + BM25 (hybrid), Neo4j Desktop (Local), 
-Unstructured.io (multi-format parsing), FastAPI + React, 
-RAGAS + custom eval, Docker
-- [ ] Write code to create relationships (MSA → SOW → Amendment chains)
-- [ ] Test: Visualize the graph in Neo4j Browser — can you "see" contract relationships?
+- [x] Write code Python, LangChain, LangGraph, Gemini 1.5 Flash (Free Tier), 
+- [x] Write code to create relationships (MSA → SOW → Amendment chains)
+- [x] Test: Visualize the graph in Neo4j Browser — can you "see" contract relationships?
 
 ### 2C: Graph Querying
-- [ ] Write Cypher queries for common patterns:
+- [x] Write Cypher queries for common patterns:
   - "Find all SOWs under MSA-001"
   - "Find all contracts with Party X"
   - "Find all amendments to Contract Y"
-- [ ] Wrap these in Python helper functions
+- [x] Wrap these in Python helper functions
 
 **Deliverable:** A populated Neo4j graph you can visually explore, with Python query functions.
 

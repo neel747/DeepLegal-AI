@@ -50,3 +50,18 @@ Each entry follows:
 **Key decisions:** Store chunks and entities in a single JSON per contract for easy downstream processing.
 **Issues encountered:** PDF tables require specialized handling (partially solved by `unstructured` layout detection).
 **Next step:** Phase 2 — Knowledge Graph Construction (Neo4j)
+
+---
+
+### 2026-05-14 — Phase 2 — Knowledge Graph Construction
+**Status:** Completed
+**What was done:**
+- Integrated `neo4j` Python driver and configured `src/config.py`.
+- Developed `GraphBuilder` to transform processed JSON data into a graph schema (Nodes: Contract, Clause, Party, Date).
+- Implemented `GraphQueries` with helper functions for relational legal search.
+- Integrated graph population into the `IngestionPipeline`.
+- Verified logic via dry-run connection attempts to Neo4j.
+**What was learned:** Knowledge Graphs excel at representing hierarchical and relational legal structures (e.g., MSAs governing multiple SOWs).
+**Key decisions:** Use `MERGE` in Cypher to ensure idempotency when importing entities like Parties and Dates.
+**Issues encountered:** Requires active Neo4j instance for full verification.
+**Next step:** Phase 3 — Dense Vector Retrieval (FAISS)

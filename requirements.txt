@@ -5,3 +5,4 @@ openai
 python-dotenv
 tiktoken
 langchain-text-splitters
+neo4j

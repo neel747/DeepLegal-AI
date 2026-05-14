@@ -5,6 +5,7 @@ from typing import List, Dict, Any
 from src.ingestion.parser import DocumentParser
 from src.ingestion.chunker import LegalChunker
 from src.ingestion.extractor import EntityExtractor
+from src.ingestion.graph_builder import GraphBuilder
 from src.config import Config
 
 logging.basicConfig(level=logging.INFO)
@@ -21,7 +22,7 @@ class IngestionPipeline:
             logger.warning("OPENAI_API_KEY not found. Entity extraction will be skipped.")
             self.extractor = None
 
-    def run(self, input_dir: str, output_dir: str):
+    def run(self, input_dir: str, output_dir: str, update_graph: bool = False):
         if not os.path.exists(output_dir):
             os.makedirs(output_dir)
 
@@ -61,6 +62,18 @@ class IngestionPipeline:
             except Exception as e:
                 logger.error(f"Failed to process {filename}: {str(e)}")
 
+        # 5. Optionally update Neo4j Graph
+        if update_graph:
+            try:
+                logger.info("Updating Neo4j Knowledge Graph...")
+                builder = GraphBuilder()
+                builder.populate_from_directory(output_dir)
+                builder.close()
+                logger.info("Neo4j Graph updated successfully.")
+            except Exception as e:
+                logger.error(f"Failed to update Neo4j graph: {str(e)}")
+
 if __name__ == "__main__":
     pipeline = IngestionPipeline()
-    pipeline.run(Config.CONTRACTS_DIR, Config.OUTPUT_DIR)
+    # To update graph, set update_graph=True
+    pipeline.run(Config.CONTRACTS_DIR, Config.OUTPUT_DIR, update_graph=False)
