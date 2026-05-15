@@ -109,4 +109,13 @@ Each entry follows:
 - Handled graceful fallbacks when the API key is not present.
 **What was learned:** Enforcing strict citation rules heavily reduces hallucination and makes the RAG system much more trustworthy for legal queries.
 **Key decisions:** Configured system instructions to explicitly ask for the "[Section X] of [Document Name] (p.[Y])" citation format inline, leveraging Gemini's strong instruction-following capabilities.
-**Next step:** Phase 7 — Multi-Agent Architecture (LangGraph)
+### 2026-05-15 — Phase 7 — Multi-Agent Architecture (LangGraph)
+**Status:** Completed
+**What was done:**
+- Integrated `langgraph` and defined `AgentState` schema to manage the multi-agent state machine.
+- Created `multi_agent.py` containing specialized agents: Planner, Retriever, Analyzer, and Validator.
+- Built a self-correcting loop using LangGraph conditional routing: if the Validator detects missing information (FAIL), the graph routes back to the Planner/Retriever with incremented retry count.
+- Developed `scratch/phase7_demo.py` to validate the looping mechanism (Mock validation successfully failed attempt 1 and passed attempt 2).
+**What was learned:** LangGraph provides exceptional visibility and control over LLM reasoning loops, preventing infinite cycles and improving reliability.
+**Key decisions:** Used pure Python functions with Gemini API calls as LangGraph nodes instead of heavy `langchain-google-genai` wrappers to maintain simplicity and compatibility with our existing config.
+**Next step:** Phase 8 — Evaluation Framework

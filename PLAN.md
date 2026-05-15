@@ -175,25 +175,25 @@ DeepLegal-AI/
 **What you learn:** Agent orchestration, state machines, specialized agents, self-correction
 
 ### 7A: LangGraph Basics
-- [ ] Install `langgraph`
-- [ ] Learn: State graphs, nodes, edges, conditional routing
-- [ ] Build a minimal 2-node graph (query → answer) to understand the pattern
+- [x] Install `langgraph`
+- [x] Learn: State graphs, nodes, edges, conditional routing
+- [x] Build a minimal 2-node graph (query → answer) to understand the pattern
 
 ### 7B: Specialized Agents
-- [ ] **Planner Agent** — Decomposes complex queries into sub-questions
-- [ ] **Retriever Agent** — Executes the Phase 5 three-stage retrieval for each sub-question
-- [ ] **Analyzer Agent** — Synthesizes retrieved context into a reasoned answer
-- [ ] **Validator Agent** — Fact-checks the answer against source chunks, checks for hallucinations
+- [x] **Planner Agent** — Decomposes complex queries into sub-questions
+- [x] **Retriever Agent** — Executes the Phase 5 three-stage retrieval for each sub-question
+- [x] **Analyzer Agent** — Synthesizes retrieved context into a reasoned answer
+- [x] **Validator Agent** — Fact-checks the answer against source chunks, checks for hallucinations
 
 ### 7C: Self-Correcting Loop
-- [ ] If Validator detects insufficient evidence or contradiction → route BACK to Retriever with refined query
-- [ ] Implement max-retry limit (3 loops) to prevent infinite cycles
-- [ ] Test with deliberately tricky queries that require self-correction
+- [x] If Validator detects insufficient evidence or contradiction → route BACK to Retriever with refined query
+- [x] Implement max-retry limit (3 loops) to prevent infinite cycles
+- [x] Test with deliberately tricky queries that require self-correction
 
 ### 7D: Full Orchestration
-- [ ] Wire all agents into a single LangGraph state machine
-- [ ] Add proper state schema (query, sub_queries, retrieved_chunks, answer, validation_result, retry_count)
-- [ ] Test end-to-end with 20 queries
+- [x] Wire all agents into a single LangGraph state machine
+- [x] Add proper state schema (query, sub_queries, retrieved_chunks, answer, validation_result, retry_count)
+- [x] Test end-to-end with 20 queries
 
 **Deliverable:** Full multi-agent pipeline with self-correcting retrieval loops.
 
