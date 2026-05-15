@@ -41,10 +41,10 @@ class EntityExtractor:
             response = self.client.chat.completions.create(
                 model=self.model,
                 messages=[
-                    {{"role": "system", "content": "You are a legal document analyzer."}},
-                    {{"role": "user", "content": prompt}}
+                    {"role": "system", "content": "You are a legal document analyzer."},
+                    {"role": "user", "content": prompt}
                 ],
-                response_format={{ "type": "json_object" }}
+                response_format={ "type": "json_object" }
             )
             
             extracted_data = json.loads(response.choices[0].message.content)
@@ -53,7 +53,7 @@ class EntityExtractor:
             
         except Exception as e:
             logger.error(f"Error during entity extraction: {str(e)}")
-            return {{}}
+            return {}
 
 if __name__ == "__main__":
     # This test will fail if OPENAI_API_KEY is not set

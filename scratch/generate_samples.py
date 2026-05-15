@@ -38,4 +38,17 @@ msa_content = [
 ]
 create_sample_docx(os.path.join(contracts_dir, "sample_msa.docx"), msa_content)
 
+# Sample SOW
+sow_content = [
+    "STATEMENT OF WORK SOW-003",
+    "This SOW is governed by the Master Services Agreement dated May 14, 2026.",
+    "Section 1. Project Details",
+    "Implementation of AI Retrieval System.",
+    "Section 2. Timeline",
+    "Project completion by December 31, 2024.",
+    "Section 3. Pricing",
+    "Fixed fee of $50,000."
+]
+create_sample_docx(os.path.join(contracts_dir, "sample_sow.docx"), sow_content)
+
 print("Sample contracts created in data/contracts/")

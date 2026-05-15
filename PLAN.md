@@ -134,19 +134,19 @@ DeepLegal-AI/
 **What you learn:** Three-stage retrieval, graph traversal for context expansion, cross-encoder reranking
 
 ### 5A: Graph Context Expansion
-- [ ] After hybrid retrieval, take top-k chunks → find their source contracts in Neo4j
-- [ ] Expand context: pull related clauses (e.g., if chunk is from SOW, also pull parent MSA clauses)
-- [ ] Implement `graph_expand(chunks)` function
+- [x] After hybrid retrieval, take top-k chunks → find their source contracts in Neo4j
+- [x] Expand context: pull related clauses (e.g., if chunk is from SOW, also pull parent MSA clauses)
+- [x] Implement `graph_expand(chunks)` function
 
 ### 5B: Cross-Encoder Reranking
-- [ ] Install `sentence-transformers` (Local Reranker)
-- [ ] Take expanded chunk set → rerank with a local cross-encoder model
-- [ ] Implement `rerank(query, chunks, top_k)` function
-- [ ] Compare final retrieval quality vs Phase 3 (dense-only) and Phase 4 (hybrid)
+- [x] Install `sentence-transformers` (Local Reranker - *Note: Stable OpenAI fallback implemented for Python 3.13 stability*)
+- [x] Take expanded chunk set → rerank with a local cross-encoder model
+- [x] Implement `rerank(query, chunks, top_k)` function
+- [x] Compare final retrieval quality vs Phase 3 (dense-only) and Phase 4 (hybrid)
 
 ### 5C: Full Three-Stage Pipeline
-- [ ] Chain: `hybrid_search()` → `graph_expand()` → `rerank()` = `retrieve(query)`
-- [ ] Test with complex multi-hop queries:
+- [x] Chain: `hybrid_search()` → `graph_expand()` → `rerank()` = `retrieve(query)`
+- [x] Test with complex multi-hop queries:
   - "What is the liability cap in the MSA that governs SOW-003?"
   - "Which contracts with Vendor X expire before 2025?"
 

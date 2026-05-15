@@ -90,4 +90,14 @@ Each entry follows:
 - Created a build script for dual indexing (FAISS + BM25).
 **What was learned:** Hybrid search significantly improves precision for legal documents by catching exact terms (like "Section 1") that vector search might miss due to high semantic similarity with other sections.
 **Key decisions:** Use RRF for fusion as it is model-agnostic and robust to different scoring scales between FAISS (L2 distance) and BM25 (relevance score).
-**Next step:** Phase 5 — Graph-Enhanced Retrieval + Cross-Encoder Reranking
+### 2026-05-15 — Phase 5 — Graph-Enhanced Retrieval & Reranking
+**Status:** Completed
+**What was done:**
+- Implemented `expand_context` in `GraphQueries` to perform relational context expansion using Neo4j.
+- Developed `LegalReranker` to perform high-precision reranking using GPT-4o-mini (as a stable alternative to local models on Python 3.13).
+- Built the `LegalRetriever` pipeline which orchestrates the three-stage retrieval: Hybrid Search -> Graph Expansion -> Reranking.
+- Created a comprehensive demo script (`scratch/phase5_demo.py`) to verify multi-hop retrieval logic (e.g., finding MSA clauses for SOW queries).
+**What was learned:** Multi-stage retrieval drastically improves relevance by combining semantic search, keyword precision, relational context, and LLM-based reranking.
+**Key decisions:** Use OpenAI for reranking to avoid segmentation faults seen with local `sentence-transformers` on Python 3.13; implement Graph Expansion before Reranking to ensure the model sees all relevant context.
+**Issues encountered:** Local `torch` and `sentence-transformers` segfault on current environment; resolved by implementing stable API-based fallbacks.
+**Next step:** Phase 6 — Single-Agent RAG (Basic Generation)
