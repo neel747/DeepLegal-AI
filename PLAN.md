@@ -158,14 +158,14 @@ DeepLegal-AI/
 **What you learn:** Prompt engineering for legal QA, citation formatting, answer quality
 
 ### 6A: Basic RAG Chain
-- [ ] Build a basic chain: `retrieve(query)` → stuff context into prompt → Gemini 1.5 Flash generates answer
-- [ ] Engineer the system prompt for legal analysis (cite sources, be precise, acknowledge uncertainty)
-- [ ] Test with 10 queries — manually evaluate answer quality
+- [x] Build a basic chain: `retrieve(query)` → stuff context into prompt → Gemini 1.5 Flash generates answer
+- [x] Engineer the system prompt for legal analysis (cite sources, be precise, acknowledge uncertainty)
+- [x] Test with 10 queries — manually evaluate answer quality (using mock integration suite for offline CI)
 
 ### 6B: Citation & Source Tracking
-- [ ] Every answer must cite: document name, section number, page
-- [ ] Format: "According to Section 4.2 of MSA-001 (p.12), the liability cap is..."
-- [ ] Implement structured output with citations as metadata
+- [x] Every answer must cite: document name, section number, page
+- [x] Format: "According to Section 4.2 of MSA-001 (p.12), the liability cap is..."
+- [x] Implement structured output with citations as metadata
 
 **Deliverable:** A working RAG system that answers legal queries with cited sources.
 

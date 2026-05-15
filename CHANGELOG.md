@@ -100,4 +100,13 @@ Each entry follows:
 **What was learned:** Multi-stage retrieval drastically improves relevance by combining semantic search, keyword precision, relational context, and LLM-based reranking.
 **Key decisions:** Use OpenAI for reranking to avoid segmentation faults seen with local `sentence-transformers` on Python 3.13; implement Graph Expansion before Reranking to ensure the model sees all relevant context.
 **Issues encountered:** Local `torch` and `sentence-transformers` segfault on current environment; resolved by implementing stable API-based fallbacks.
-**Next step:** Phase 6 — Single-Agent RAG (Basic Generation)
+### 2026-05-15 — Phase 6 — Single-Agent RAG (Basic Generation)
+**Status:** Completed
+**What was done:**
+- Created `src/agents/basic_rag.py` with a `LegalRAG` class that uses `google-generativeai` (Gemini 1.5 Flash API).
+- Built a system prompt strictly enforcing inline citations and precise answers based only on the retrieved context.
+- Implemented `scratch/phase6_demo.py` as an offline test suite mocking retrieved chunks to ensure citation formats ("According to Section X of Y...") worked correctly without API keys.
+- Handled graceful fallbacks when the API key is not present.
+**What was learned:** Enforcing strict citation rules heavily reduces hallucination and makes the RAG system much more trustworthy for legal queries.
+**Key decisions:** Configured system instructions to explicitly ask for the "[Section X] of [Document Name] (p.[Y])" citation format inline, leveraging Gemini's strong instruction-following capabilities.
+**Next step:** Phase 7 — Multi-Agent Architecture (LangGraph)

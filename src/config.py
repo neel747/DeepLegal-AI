@@ -5,6 +5,7 @@ load_dotenv()
 
 class Config:
     OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
+    GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
     CONTRACTS_DIR = os.getenv("CONTRACTS_DIR", "data/contracts")
     OUTPUT_DIR = os.getenv("OUTPUT_DIR", "data/output")
     VECTOR_STORE_DIR = os.getenv("VECTOR_STORE_DIR", "data/vector_store")
