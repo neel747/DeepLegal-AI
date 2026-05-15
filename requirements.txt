@@ -14,3 +14,7 @@ langgraph
 langchain-core
 ragas
 datasets
+fastapi
+uvicorn
+python-multipart
+streamlit

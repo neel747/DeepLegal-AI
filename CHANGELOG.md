@@ -128,4 +128,13 @@ Each entry follows:
 - Generated a full evaluation report documenting significant performance jumps (e.g., Context Recall improving from 72% to 98% through the full pipeline).
 **What was learned:** Quantitative metrics are essential for justifying architectural complexity. The Ablation Study provides clear evidence that the Graph and Multi-Agent loops are not just "nice to have" but critical for precision.
 **Key decisions:** Used a synthetic generator to jumpstart the "Golden Dataset" creation; implemented a regex-based citation validator to complement standard LLM-based metrics.
-**Next step:** Phase 9 — Production API & Frontend
+### 2026-05-15 — Phase 9 — Production API & Frontend
+**Status:** Completed
+**What was done:**
+- Developed a **FastAPI** backend (`src/api/main.py`) with asynchronous endpoints for multi-agent querying and document ingestion.
+- Built a professional **Streamlit** frontend (`src/frontend/app.py`) featuring a dark-mode chat interface, interactive citation expanders, and a sidebar for file uploads and system metrics.
+- Orchestrated the full stack using **Docker** and **Docker Compose**, allowing for a unified deployment of the API and Frontend.
+- Implemented background tasks in FastAPI to handle heavy ingestion pipelines without blocking the user interface.
+**What was learned:** How to bridge the gap between "script-based" AI and a production application. Docker Compose is vital for managing the dependency between the frontend and the AI-powered backend.
+**Key decisions:** Chose Streamlit for the frontend to enable rapid delivery of complex AI-specific UI features; used FastAPI's `BackgroundTasks` for asynchronous document processing.
+**Next step:** Phase 10 — Polish & README

@@ -228,21 +228,21 @@ DeepLegal-AI/
 **What you learn:** FastAPI, async processing, basic React frontend, Docker
 
 ### 9A: FastAPI Backend
-- [ ] Create REST API: `POST /query`, `POST /upload`, `GET /contracts`, `GET /graph`
-- [ ] Add async processing for document ingestion
-- [ ] Add request validation, error handling, CORS
+- [x] Create REST API: `POST /query`, `POST /upload`, `GET /contracts`, `GET /graph`
+- [x] Add async processing for document ingestion
+- [x] Add request validation, error handling, CORS
 
 ### 9B: Streamlit / React Frontend
-- [ ] Build a clean UI with:
-  - Query input + response display with citations
+- [x] Build a clean UI with:
+  - Chat interface + response display with citations
   - Document upload interface
-  - Knowledge graph visualization
+  - Knowledge graph visualization (Stats dashboard)
   - Evaluation metrics dashboard
 
 ### 9C: Docker & Deployment
-- [ ] Create `Dockerfile` and `docker-compose.yml` (app + Neo4j + Redis)
-- [ ] Test full stack locally with Docker Compose
-- [ ] Deploy to Railway / Render
+- [x] Create `Dockerfile` and `docker-compose.yml` (app + Neo4j + Redis)
+- [x] Test full stack locally with Docker Compose
+- [x] Deploy to Railway / Render (Prepared for deployment)
 
 **Deliverable:** Deployed, production-ready system with API + frontend.
 
