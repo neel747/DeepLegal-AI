@@ -12,3 +12,5 @@ numpy
 google-generativeai
 langgraph
 langchain-core
+ragas
+datasets
