@@ -72,7 +72,8 @@ for message in st.session_state.messages:
         if "sources" in message and message["sources"]:
             with st.expander("📚 View Citations"):
                 for i, src in enumerate(message["sources"]):
-                    st.markdown(f"**Source {i+1}:** {src.get('source')} (Section {src.get('metadata', {}).get('section')})")
+                    section_val = src.get('section') or src.get('metadata', {}).get('section') or 'Unknown'
+                    st.markdown(f"**Source {i+1}:** {src.get('source')} (Section {section_val})")
                     st.caption(src.get('content')[:300] + "...")
 
 # Chat Input
