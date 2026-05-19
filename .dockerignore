@@ -1,0 +1,10 @@
+.venv
+venv
+.git
+.gitignore
+__pycache__
+*.pyc
+.env
+data/output
+data/vector_store
+data/bm25_store

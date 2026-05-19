@@ -51,15 +51,15 @@ def startup_event():
     try:
         # 1. Setup Retrieval Components
         embedder = LegalEmbedder()
-        vector_store = VectorStore(Config.VECTOR_STORE_DIR, embedder)
-        bm25_store = BM25Store(Config.BM25_STORE_DIR)
+        vector_store = VectorStore()
+        bm25_store = BM25Store()
         
         # Load indices
         vector_store.load()
         bm25_store.load()
         
-        searcher = HybridSearcher(vector_store, bm25_store)
-        graph_queries = GraphQueries(Config.NEO4J_URI, Config.NEO4J_USERNAME, Config.NEO4J_PASSWORD)
+        searcher = HybridSearcher(vector_store, bm25_store, embedder)
+        graph_queries = GraphQueries()
         reranker = LegalReranker()
         
         state.retriever = LegalRetriever(searcher, graph_queries, reranker)

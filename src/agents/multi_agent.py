@@ -23,7 +23,7 @@ class MultiAgentRAG:
     """
     LangGraph-based multi-agent system for self-correcting legal retrieval.
     """
-    def __init__(self, retriever: LegalRetriever, model_name: str = "gemini-1.5-flash"):
+    def __init__(self, retriever: LegalRetriever, model_name: str = "gemini-2.5-flash"):
         self.retriever = retriever
         if Config.GEMINI_API_KEY:
             genai.configure(api_key=Config.GEMINI_API_KEY)
@@ -31,6 +31,30 @@ class MultiAgentRAG:
         else:
             logger.warning("GEMINI_API_KEY missing. Agents will use fallback mocks.")
             self.model = None
+
+    def _generate_with_retry(self, prompt: str, max_retries: int = 3, initial_delay: float = 4.0) -> Any:
+        import time
+        from google.api_core.exceptions import ResourceExhausted
+        
+        delay = initial_delay
+        for attempt in range(max_retries):
+            try:
+                return self.model.generate_content(prompt)
+            except ResourceExhausted as e:
+                if attempt == max_retries - 1:
+                    raise e
+                logger.warning(f"Gemini API rate limit hit. Retrying in {delay} seconds...")
+                time.sleep(delay)
+                delay *= 2
+            except Exception as e:
+                if "429" in str(e) or "quota" in str(e).lower() or "limit" in str(e).lower():
+                    if attempt == max_retries - 1:
+                        raise e
+                    logger.warning(f"Gemini API 429/Quota error. Retrying in {delay} seconds...")
+                    time.sleep(delay)
+                    delay *= 2
+                else:
+                    raise e
 
     # --- Nodes ---
     def planner_node(self, state: AgentState) -> dict:
@@ -50,7 +74,7 @@ class MultiAgentRAG:
         Query: {query}
         """
         try:
-            response = self.model.generate_content(prompt)
+            response = self._generate_with_retry(prompt)
             # Clean up potential markdown formatting
             text = response.text.replace("```json", "").replace("```", "").strip()
             sub_queries = json.loads(text)
@@ -108,7 +132,7 @@ class MultiAgentRAG:
         Query: {query}
         """
         try:
-            response = self.model.generate_content(prompt)
+            response = self._generate_with_retry(prompt)
             draft = response.text
         except Exception as e:
             logger.error(f"[Analyzer] Generation failed: {e}")
@@ -142,7 +166,7 @@ class MultiAgentRAG:
         Draft: {draft}
         """
         try:
-            response = self.model.generate_content(prompt)
+            response = self._generate_with_retry(prompt)
             evaluation = response.text.strip().upper()
         except Exception:
             evaluation = "PASS"
@@ -158,6 +182,7 @@ class MultiAgentRAG:
         else:
             logger.info("[Validator] Draft approved.")
             return {"final_answer": draft, "validation_feedback": "PASS"}
+
 
     # --- Routing ---
     def should_continue(self, state: AgentState) -> str:

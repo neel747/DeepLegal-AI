@@ -17,7 +17,7 @@ class Config:
 
     @classmethod
     def validate(cls):
-        if not cls.OPENAI_API_KEY:
-            raise ValueError("OPENAI_API_KEY is not set in .env file")
+        if not cls.GEMINI_API_KEY:
+            raise ValueError("GEMINI_API_KEY is not set in .env file")
         if not cls.NEO4J_PASSWORD:
             raise ValueError("NEO4J_PASSWORD is not set in .env file")

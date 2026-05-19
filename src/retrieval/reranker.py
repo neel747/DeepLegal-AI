@@ -1,19 +1,20 @@
 from typing import List, Dict, Any
 import logging
-import openai
+import google.generativeai as genai
 from src.config import Config
 
 logger = logging.getLogger(__name__)
 
 class LegalReranker:
     """
-    Reranks chunks using GPT-4o-mini to ensure high precision.
+    Reranks chunks using Gemini 1.5 Flash to ensure high precision.
     Local sentence-transformers cross-encoders are avoided due to Python 3.13 stability issues.
     """
     
     def __init__(self):
         Config.validate()
-        self.client = openai.OpenAI(api_key=Config.OPENAI_API_KEY)
+        genai.configure(api_key=Config.GEMINI_API_KEY)
+        self.model = genai.GenerativeModel("gemini-2.5-flash")
 
     def rerank(self, query: str, chunks: List[Dict[str, Any]], top_k: int = 5) -> List[Dict[str, Any]]:
         """
@@ -23,7 +24,6 @@ class LegalReranker:
             return []
 
         # Prepare the prompt for reranking
-        # We ask the model to score each chunk from 0 to 10
         chunk_texts = [f"[{i}] {c['content']}" for i, c in enumerate(chunks)]
         prompt = f"""
         Query: {query}
@@ -37,16 +37,9 @@ class LegalReranker:
         """
 
         try:
-            response = self.client.chat.completions.create(
-                model="gpt-4o-mini",
-                messages=[
-                    {"role": "system", "content": "You are a legal expert reranking search results for relevance."},
-                    {"role": "user", "content": prompt}
-                ],
-                temperature=0
-            )
+            response = self.model.generate_content(prompt)
+            order_str = response.text.strip()
             
-            order_str = response.choices[0].message.content.strip()
             # Clean up the output if it's not just indices
             import re
             indices = [int(idx) for idx in re.findall(r'\d+', order_str)]
@@ -77,7 +70,7 @@ class LocalReranker:
     Note: Currently disabled due to segmentation faults on Python 3.13.
     """
     def __init__(self):
-        logger.warning("LocalReranker is currently disabled. Using LegalReranker (OpenAI) instead.")
+        logger.warning("LocalReranker is currently disabled. Using LegalReranker (Gemini) instead.")
         self.model = None
 
     def rerank(self, query: str, chunks: List[Dict[str, Any]], top_k: int = 5) -> List[Dict[str, Any]]:

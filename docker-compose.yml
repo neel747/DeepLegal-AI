@@ -25,12 +25,15 @@ services:
       - api
     restart: always
 
-  # Neo4j is already running locally in the user's environment, 
-  # but for a full deployment, we'd include it here:
-  # neo4j:
-  #   image: neo4j:latest
-  #   ports:
-  #     - "7474:7474"
-  #     - "7687:7687"
-  #   environment:
-  #     - NEO4J_AUTH=neo4j/password
+  neo4j:
+    image: neo4j:5.12.0
+    ports:
+      - "7474:7474"
+      - "7687:7687"
+    environment:
+      - NEO4J_AUTH=neo4j/password
+    volumes:
+      - neo4j_data:/data
+
+volumes:
+  neo4j_data:

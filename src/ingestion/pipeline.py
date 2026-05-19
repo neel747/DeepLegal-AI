@@ -19,7 +19,7 @@ class IngestionPipeline:
         try:
             self.extractor = EntityExtractor()
         except Exception:
-            logger.warning("OPENAI_API_KEY not found. Entity extraction will be skipped.")
+            logger.warning("GEMINI_API_KEY not found. Entity extraction will be skipped.")
             self.extractor = None
 
     def run(self, input_dir: str, output_dir: str, update_graph: bool = False):
@@ -75,5 +75,5 @@ class IngestionPipeline:
 
 if __name__ == "__main__":
     pipeline = IngestionPipeline()
-    # To update graph, set update_graph=True
-    pipeline.run(Config.CONTRACTS_DIR, Config.OUTPUT_DIR, update_graph=False)
+    # By default, update the Neo4j graph during ingestion
+    pipeline.run(Config.CONTRACTS_DIR, Config.OUTPUT_DIR, update_graph=True)

@@ -11,7 +11,7 @@ class LegalRAG:
     Basic Single-Agent RAG using Gemini 1.5 Flash.
     Takes a LegalRetriever to get context and generates a cited legal analysis.
     """
-    def __init__(self, retriever: LegalRetriever, model_name: str = "gemini-1.5-flash"):
+    def __init__(self, retriever: LegalRetriever, model_name: str = "gemini-2.5-flash"):
         self.retriever = retriever
         
         # Configure Gemini

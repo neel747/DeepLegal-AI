@@ -1,34 +1,35 @@
 from typing import List
 import numpy as np
-from openai import OpenAI
+import google.generativeai as genai
 from src.config import Config
 
 class LegalEmbedder:
     """
-    Handles embedding generation using OpenAI's API.
+    Handles embedding generation using Gemini's API.
     """
     
-    def __init__(self, model_name: str = "text-embedding-3-small"):
+    def __init__(self, model_name: str = "models/gemini-embedding-2"):
         Config.validate()
-        self.client = OpenAI(api_key=Config.OPENAI_API_KEY)
+        genai.configure(api_key=Config.GEMINI_API_KEY)
         self.model = model_name
 
     def embed_text(self, texts: List[str]) -> np.ndarray:
         """
-        Generates embeddings for a list of strings using OpenAI.
+        Generates embeddings for a list of strings using Gemini.
         """
         if isinstance(texts, str):
             texts = [texts]
         
-        # Clean texts: replace newlines with spaces as recommended by OpenAI
+        # Clean texts: replace newlines with spaces
         texts = [t.replace("\n", " ") for t in texts]
         
-        response = self.client.embeddings.create(
-            input=texts,
-            model=self.model
+        response = genai.embed_content(
+            model=self.model,
+            content=texts,
+            task_type="retrieval_document"
         )
         
-        embeddings = [data.embedding for data in response.data]
+        embeddings = response['embedding']
         return np.array(embeddings).astype('float32')
 
 if __name__ == "__main__":

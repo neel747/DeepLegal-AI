@@ -1,20 +1,20 @@
 import json
 import logging
 from typing import Dict, Any, List
-from openai import OpenAI
+import google.generativeai as genai
 from src.config import Config
 
 logger = logging.getLogger(__name__)
 
 class EntityExtractor:
     """
-    Extracts structured entities from legal documents using GPT-4o-mini.
+    Extracts structured entities from legal documents using Gemini 1.5 Flash.
     """
     
     def __init__(self):
         Config.validate()
-        self.client = OpenAI(api_key=Config.OPENAI_API_KEY)
-        self.model = "gpt-4o-mini"
+        genai.configure(api_key=Config.GEMINI_API_KEY)
+        self.model = genai.GenerativeModel("gemini-2.5-flash")
 
     def extract(self, text: str) -> Dict[str, Any]:
         """
@@ -38,16 +38,12 @@ class EntityExtractor:
         """
         
         try:
-            response = self.client.chat.completions.create(
-                model=self.model,
-                messages=[
-                    {"role": "system", "content": "You are a legal document analyzer."},
-                    {"role": "user", "content": prompt}
-                ],
-                response_format={ "type": "json_object" }
+            response = self.model.generate_content(
+                prompt,
+                generation_config={"response_mime_type": "application/json"}
             )
             
-            extracted_data = json.loads(response.choices[0].message.content)
+            extracted_data = json.loads(response.text)
             logger.info("Successfully extracted entities from document.")
             return extracted_data
             
@@ -56,8 +52,6 @@ class EntityExtractor:
             return {}
 
 if __name__ == "__main__":
-    # This test will fail if OPENAI_API_KEY is not set
-    # I'll add a dummy test mode or just let it fail for now
     try:
         extractor = EntityExtractor()
         test_text = "This NDA is between ACME Corp and Globex. Effective May 1, 2024. Total liability is capped at $500k."

@@ -2,7 +2,7 @@ import os
 import json
 import logging
 from typing import List, Dict, Any
-import openai
+import google.generativeai as genai
 from src.config import Config
 
 logger = logging.getLogger(__name__)
@@ -14,8 +14,8 @@ class DatasetGenerator:
     
     def __init__(self):
         Config.validate()
-        self.client = openai.OpenAI(api_key=Config.OPENAI_API_KEY)
-        self.model = "gpt-4o-mini"
+        genai.configure(api_key=Config.GEMINI_API_KEY)
+        self.model = genai.GenerativeModel("gemini-2.5-flash")
 
     def generate_qa_pairs(self, json_data: Dict[str, Any], num_questions: int = 5) -> List[Dict[str, Any]]:
         """
@@ -48,17 +48,13 @@ class DatasetGenerator:
         """
         
         try:
-            response = self.client.chat.completions.create(
-                model=self.model,
-                messages=[
-                    {"role": "system", "content": "You are a legal document analyzer."},
-                    {"role": "user", "content": prompt}
-                ],
-                response_format={"type": "json_object"}
+            response = self.model.generate_content(
+                prompt,
+                generation_config={"response_mime_type": "application/json"}
             )
             
             # The model might return a wrapper object like {"questions": [...]}
-            raw_output = json.loads(response.choices[0].message.content)
+            raw_output = json.loads(response.text)
             if isinstance(raw_output, dict):
                 # Try to find the list inside
                 for key, val in raw_output.items():

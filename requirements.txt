@@ -1,3 +1,4 @@
+--extra-index-url https://download.pytorch.org/whl/cpu
 unstructured[pdf,docx]
 python-docx
 pymupdf
@@ -6,15 +7,14 @@ python-dotenv
 tiktoken
 langchain-text-splitters
 neo4j
-sentence-transformers
 faiss-cpu
 numpy
 google-generativeai
 langgraph
 langchain-core
-ragas
-datasets
 fastapi
 uvicorn
 python-multipart
 streamlit
+nltk
+rank_bm25
